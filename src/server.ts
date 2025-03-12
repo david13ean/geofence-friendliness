@@ -1,3 +1,4 @@
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import {
   AngularNodeAppEngine,
   createNodeRequestHandler,
@@ -13,7 +14,6 @@ const browserDistFolder = resolve(serverDistFolder, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
-
 /**
  * Example Express Rest API endpoints can be defined here.
  * Uncomment and define endpoints as necessary.
@@ -25,6 +25,9 @@ const angularApp = new AngularNodeAppEngine();
  * });
  * ```
  */
+
+app.post('/api/mobileDataCoords', (req, res) => {('');
+});
 
 /**
  * Serve static files from /browser
