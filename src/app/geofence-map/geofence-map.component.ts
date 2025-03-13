@@ -95,7 +95,7 @@ export class GeofenceMapComponent implements AfterViewInit {
     try {
       const restOperation = post({
         apiName: 'myRestApi',
-        path: 'item',
+        path: 'items',
         options: {
           body: {
             message: 'Mow the lawn'
