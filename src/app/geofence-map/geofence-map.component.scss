@@ -2,3 +2,19 @@
     width: 800px;
     height: 500px;
   }
+
+#get-friendliness-button {
+    background-color: lightblue; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 2.75rem;
+}
+#get-friendliness-button:hover {
+      background-color: blueviolet;
+      color: white;
+}

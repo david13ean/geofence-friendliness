@@ -1,6 +1,10 @@
 import { DOCUMENT } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Inject, Renderer2 } from '@angular/core';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { generateClient } from 'aws-amplify/data';
+import type { Schema } from '../../../amplify/data/resource';
+
+const client = generateClient<Schema>();
 
 @Component({
   selector: 'app-geofence-map',
@@ -9,6 +13,8 @@ import { GoogleMapsModule } from '@angular/google-maps';
   styleUrl: './geofence-map.component.scss',
 })
 export class GeofenceMapComponent implements AfterViewInit {
+
+  friendliness: any;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -51,5 +57,17 @@ export class GeofenceMapComponent implements AfterViewInit {
     });
 
     drawingManager.setMap(map);
+  }
+
+  getPolygonFriendliness() {
+      try {
+        client.models.Friendliness.observeQuery().subscribe({
+          next: ({ items, isSynced }) => {
+            this.friendliness = items;
+          },
+        });
+      } catch (error) {
+        console.error('error fetching friendliness', error);
+      }
   }
 }
