@@ -1,10 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Inject, Renderer2 } from '@angular/core';
 import { GoogleMapsModule } from '@angular/google-maps';
-import { generateClient } from 'aws-amplify/data';
-import type { Schema } from '../../../amplify/data/resource';
-
-const client = generateClient<Schema>();
+import { post } from 'aws-amplify/api';
 
 @Component({
   selector: 'app-geofence-map',
@@ -59,15 +56,16 @@ export class GeofenceMapComponent implements AfterViewInit {
     drawingManager.setMap(map);
   }
 
-  getPolygonFriendliness() {
+  async getPolygonFriendliness() {
       try {
-        client.models.Friendliness.observeQuery().subscribe({
-          next: ({ items, isSynced }) => {
-            this.friendliness = items;
-          },
+        const restOperation = post({ 
+          apiName: 'mobileDataCoords ',
+          path: '/' 
         });
-      } catch (error) {
-        console.error('error fetching friendliness', error);
+        const response = await restOperation.response;
+        console.log('GET call succeeded: ', response);
+      } catch (error: any) {
+        console.log('GET call failed: ', JSON.parse(error.response.body));
       }
   }
 }
