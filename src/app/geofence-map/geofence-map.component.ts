@@ -17,6 +17,8 @@ import { post } from 'aws-amplify/api';
 })
 export class GeofenceMapComponent implements AfterViewInit {
   friendliness: any;
+  map: any;
+  coordinates: any;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -42,7 +44,7 @@ export class GeofenceMapComponent implements AfterViewInit {
   }
 
   private initMap(): any {
-    const map = new google.maps.Map(
+    this.map = new google.maps.Map(
       document.getElementById('geofence-map') as any,
       {
         center: { lat: 40, lng: -111 },
@@ -62,7 +64,13 @@ export class GeofenceMapComponent implements AfterViewInit {
       },
     });
 
-    drawingManager.setMap(map);
+    drawingManager.setMap(this.map);
+
+    google.maps.event.addListener(drawingManager, 'polygoncomplete', (polygon: any) => {
+      this.coordinates = (polygon.getPath().getArray());
+      window.alert("success"+ this.coordinates);
+  });
+  
   }
 
   async getPolygonFriendliness() {
@@ -72,23 +80,23 @@ export class GeofenceMapComponent implements AfterViewInit {
 
   async postItem() {
     try {
+      console.log('/*************Sending coordinates:************/');
+      console.log(this.coordinates);
+      
       const restOperation = post({
         apiName: 'mobileDataCoords',
         path: '/',
         options: {
           body: {
-            message: 'Mow the lawn'
+            coordinates: this.coordinates
           }
         }
       });
-      console.log('/*************Marker 1************/');
-      console.log(restOperation);  
       const { body } = await restOperation.response;
       const response = await body.json();
-  
-      console.log('POST call succeeded');
+      console.log('/*************Got response:************/');
       console.log(response);
-
+      
     } catch (error: any) {
       console.log('POST call failed: ', JSON.parse(error));
     }
