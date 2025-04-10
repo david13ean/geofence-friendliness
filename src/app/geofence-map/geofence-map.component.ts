@@ -81,33 +81,14 @@ export class GeofenceMapComponent implements AfterViewInit {
           }
         }
       });
-  
+      console.log('/*************Marker 1************/');
+      console.log(restOperation);  
       const { body } = await restOperation.response;
       const response = await body.json();
   
       console.log('POST call succeeded');
       console.log(response);
-    } catch (error: any) {
-      console.log('POST call failed: ', JSON.parse(error));
-    }
-    
 
-    try {
-      const restOperation = post({
-        apiName: 'myRestApi',
-        path: 'items',
-        options: {
-          body: {
-            message: 'Mow the lawn'
-          }
-        }
-      });
-  
-      const { body } = await restOperation.response;
-      const response = await body.json();
-  
-      console.log('POST call succeeded');
-      console.log(response);
     } catch (error: any) {
       console.log('POST call failed: ', JSON.parse(error));
     }

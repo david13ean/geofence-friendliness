@@ -7,14 +7,21 @@ import outputs from '../amplify_outputs.json';
 
 const amplifyConfig = parseAmplifyConfig(outputs);
 
+// Add existing resource to the existing configuration.
 Amplify.configure({
   ...amplifyConfig,
   API: {
     ...amplifyConfig.API,
-    REST: outputs.custom.API,
-  },
+    REST: {
+      ...amplifyConfig.API?.REST,
+      mobileDataCoords: {
+        endpoint:
+          'https://4fla1tc57k.execute-api.us-east-2.amazonaws.com/dev',
+        region: 'us-east-2' // Optional
+      }
+    }
+  }
 });
-Amplify.configure(outputs);
 
 bootstrapApplication(AppComponent, appConfig)
   .catch((err) => console.error(err));
